@@ -1,0 +1,62 @@
+[
+    {
+        "id_destino": 1,
+        "nombre": "RestauranteABC",
+        "tipo_cocina": "regional",
+        "ingredientes": [
+            "carnes",
+            "verduras",
+            "bebidas"
+        ],
+        "precio_minimo": 2000.0,
+        "precio_maximo": 4000.0,
+        "popularidad": null,
+        "disponibilidad": true,
+        "imagen": "k.jpg",
+        "ubicacion": {
+            "id ubicacion": 1,
+            "direccion": "av salta",
+            "coordenadas": "-24.731156377630313, -65.41189177202763"
+        }
+    },
+    {
+        "id_destino": 2,
+        "nombre": "Rest543",
+        "tipo_cocina": "vegetariana",
+        "ingredientes": [
+            "hortalizas",
+            "legumbres",
+            "frutas"
+        ],
+        "precio_minimo": 2500.0,
+        "precio_maximo": 3500.0,
+        "popularidad": null,
+        "disponibilidad": true,
+        "imagen": "f.jpg",
+        "ubicacion": {
+            "id ubicacion": 2,
+            "direccion": "av jujuy",
+            "coordenadas": "-24.73043975200441, -65.4043356856403"
+        }
+    },
+    {
+        "id_destino": 3,
+        "nombre": "Almacen20",
+        "tipo_cocina": "Bebidas",
+        "ingredientes": [
+            "gaseosas",
+            "jugos",
+            "postres"
+        ],
+        "precio_minimo": 1500.0,
+        "precio_maximo": 3200.0,
+        "popularidad": null,
+        "disponibilidad": true,
+        "imagen": "l.jpg",
+        "ubicacion": {
+            "id ubicacion": 3,
+            "direccion": "av mendoza",
+            "coordenadas": "-24.72181235799235, -65.41037448560446"
+        }
+    }
+]

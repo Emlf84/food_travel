@@ -1,0 +1,11 @@
+[
+    {
+        "tipo": "usuario",
+        "id": 1,
+        "nombre": "usuario1",
+        "apellido": "ap5465",
+        "password": "12345",
+        "historial_ruta": [],
+        "agregados": []
+    }
+]
