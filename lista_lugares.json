@@ -1,62 +1,107 @@
 [
     {
         "id_destino": 1,
-        "nombre": "RestauranteABC",
-        "tipo_cocina": "regional",
+        "nombre": "Gustos y Sabores",
+        "id_usuario": null,
+        "tipo_cocina": "Regional",
+        "ingredientes": [
+            "carnes",
+            "verduras",
+            "pastas"
+        ],
+        "precio_minimo": 2000.0,
+        "precio_maximo": 5000.0,
+        "popularidad": null,
+        "disponibilidad": true,
+        "imagen": "a.jpg",
+        "ubicacion": {
+            "id ubicacion": 1,
+            "direccion": "av. Jujuy",
+            "coordenadas": "-24.73343755286683, -65.41182069725858"
+        }
+    },
+    {
+        "id_destino": 2,
+        "nombre": "La Gastronom\u00eda Perfecta",
+        "id_usuario": null,
+        "tipo_cocina": "Rgional",
         "ingredientes": [
             "carnes",
             "verduras",
             "bebidas"
         ],
-        "precio_minimo": 2000.0,
-        "precio_maximo": 4000.0,
+        "precio_minimo": 1500,
+        "precio_maximo": 3000,
         "popularidad": null,
         "disponibilidad": true,
-        "imagen": "k.jpg",
-        "ubicacion": {
-            "id ubicacion": 1,
-            "direccion": "av salta",
-            "coordenadas": "-24.731156377630313, -65.41189177202763"
-        }
-    },
-    {
-        "id_destino": 2,
-        "nombre": "Rest543",
-        "tipo_cocina": "vegetariana",
-        "ingredientes": [
-            "hortalizas",
-            "legumbres",
-            "frutas"
-        ],
-        "precio_minimo": 2500.0,
-        "precio_maximo": 3500.0,
-        "popularidad": null,
-        "disponibilidad": true,
-        "imagen": "f.jpg",
+        "imagen": "b.jpg",
         "ubicacion": {
             "id ubicacion": 2,
-            "direccion": "av jujuy",
-            "coordenadas": "-24.73043975200441, -65.4043356856403"
+            "direccion": "av. Mendoza",
+            "coordenadas": "-24.730543236523687, -65.40578997423837"
         }
     },
     {
         "id_destino": 3,
-        "nombre": "Almacen20",
+        "nombre": "La Mesa",
+        "id_usuario": null,
         "tipo_cocina": "Bebidas",
         "ingredientes": [
-            "gaseosas",
+            "postres",
             "jugos",
-            "postres"
+            "gaseosas"
         ],
-        "precio_minimo": 1500.0,
-        "precio_maximo": 3200.0,
+        "precio_minimo": 3000,
+        "precio_maximo": 5000,
         "popularidad": null,
         "disponibilidad": true,
-        "imagen": "l.jpg",
+        "imagen": "c.jpg",
         "ubicacion": {
             "id ubicacion": 3,
-            "direccion": "av mendoza",
-            "coordenadas": "-24.72181235799235, -65.41037448560446"
+            "direccion": "av. Nada",
+            "coordenadas": "-24.732609126294673, -65.40175593187998"
+        }
+    },
+    {
+        "id_destino": 4,
+        "nombre": "El Rinc\u00f3n",
+        "id_usuario": null,
+        "tipo_cocina": "Comida rapida",
+        "ingredientes": [
+            "hamburguesas",
+            "milanesas",
+            "ensaladas"
+        ],
+        "precio_minimo": 1500,
+        "precio_maximo": 3500,
+        "popularidad": null,
+        "disponibilidad": true,
+        "imagen": "d.jpg",
+        "ubicacion": {
+            "id ubicacion": 4,
+            "direccion": "av. Urquiza",
+            "coordenadas": "-24.726021546737957, -65.41312849810312"
+        }
+    },
+    {
+        "id_destino": 5,
+        "nombre": "La Bebida",
+        "id_usuario": null,
+        "tipo_cocina": "Bebidas",
+        "ingredientes": [
+            "jugos",
+            "gaseosas",
+            "vinos"
+        ],
+        "precio_minimo": 1200,
+        "precio_maximo": 6500,
+        "popularidad": null,
+        "disponibilidad": true,
+        "imagen": "e.jpg",
+        "ubicacion": {
+            "id ubicacion": 5,
+            "direccion": "av. Lugar",
+            "coordenadas": "-24.71982344633172, -65.4097381859083"
         }
     }
 ]

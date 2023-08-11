@@ -196,6 +196,8 @@ class Ventana2(customtkinter.CTk):
         self.geometry("1200x800")
         self.configure(fg_color=("#1E1E23"))
 
+        self.lista_lugares = Destinoculinario.cargar_destinos(usuario_principal)
+
 
         self.mi_ruta=[]
         self.cargar_ruta()
@@ -257,7 +259,7 @@ class Ventana2(customtkinter.CTk):
             self.ventana_mapa.grid_remove()
             self.ventana_mi_lista.grid_remove()
             self.ventana_busqueda.grid()
-            self.ventana_busqueda.mostrar_lista()
+            self.ventana_busqueda.buscar_lugar()
 
         elif opcion == "Mi ruta":
             self.ventana_mapa.grid_remove()
@@ -269,7 +271,7 @@ class Ventana2(customtkinter.CTk):
             
 
     def cargar_ruta(self):                                #DESCARTAR||||||||||||||||
-        lugares= Destinoculinario.cargar_destinos()
+        lugares= Destinoculinario.cargar_destinos(usuario_principal)
         for lugar in lugares:
             if lugar.id_destino in usuario_principal["historial_ruta"] and lugar not in self.mi_ruta:
                 self.mi_ruta.append(lugar)
@@ -295,6 +297,7 @@ class Ventana2(customtkinter.CTk):
         self.mi_ruta.remove(lugar)
         usuario_principal["historial_ruta"].remove(lugar.id_destino)
         self.guardar_ruta(usuario_principal)
+        print()
         for label, button, button_2, button_3 in self.ventana_mi_lista.label_button_p:
             if label.cget("text") == lugar.nombre:
                 label.destroy()
@@ -325,12 +328,40 @@ class Ventana2(customtkinter.CTk):
         t_rv.place(relx= 0.65, rely= 0.05)
         
         detalle_f = customtkinter.CTkFrame(master=inf)
-        detalle_f.grid(row=0, column=0,sticky="nsew",padx=10, pady=(10,10),ipadx=70)
-        detalle_f.rowconfigure(5, weight=1)
+        detalle_f.grid(row=0, column=0,sticky="nsew",padx=10, pady=(10,10),ipadx=50)
+        detalle_f.rowconfigure(11, weight=1)
         detalle_f.columnconfigure(0, weight=1)
+        if lugar.id_usuario == None:
+            titulo = customtkinter.CTkLabel(detalle_f, text= "DETALLES DEL LUGAR",font=customtkinter.CTkFont(size=15, weight="bold"))
+            titulo.grid(row=3, column=0, padx=1, pady= (20, 10))
 
-        nombre = customtkinter.CTkLabel(detalle_f, text= "Detalles del lugar",font=customtkinter.CTkFont(size=15, weight="bold"))
-        nombre.grid(row=3, column=0, padx=1, pady= (20, 10))
+            nombre = customtkinter.CTkLabel(detalle_f, text= f"{lugar.nombre}",font=customtkinter.CTkFont("Open Sans",size=20, weight="bold"))
+            nombre.grid(row=4, column=0, padx=0, pady= (20, 10))
+
+            t_cc = customtkinter.CTkLabel(detalle_f, text= "TIPO DE COCINA",font=customtkinter.CTkFont(size=15, weight="bold"))
+            t_cc.grid(row=5, column=0, padx=0, pady= (10, 10))
+
+            t_c = customtkinter.CTkLabel(detalle_f, text= f"{lugar.tipo_cocina}",font=customtkinter.CTkFont("Open Sans",size=15, weight="bold"))
+            t_c.grid(row=6, column=0, padx=0, pady= (5, 5))
+
+            t_in = customtkinter.CTkLabel(detalle_f, text= "INGREDIENTES",font=customtkinter.CTkFont(size=15, weight="bold"))
+            t_in.grid(row=7, column=0, padx=0, pady= (10, 10))
+
+            ing = customtkinter.CTkLabel(detalle_f, text= f"{lugar.ingredientes[0]}, {lugar.ingredientes[1]}, {lugar.ingredientes[2]}",font=customtkinter.CTkFont("Open Sans",size=15, weight="bold"))
+            ing.grid(row=8, column=0, padx=0, pady= (10, 10))
+
+            p_m = customtkinter.CTkLabel(detalle_f, text= "PRECIO MINIMO      PRECIO MAXIMO",font=customtkinter.CTkFont(size=15, weight="bold"))
+            p_m.grid(row=9, column=0, padx=0, pady= (10, 10))
+
+            pm = customtkinter.CTkLabel(detalle_f, text= f"{lugar.precio_minimo}$             {lugar.precio_maximo}$",font=customtkinter.CTkFont("Open Sans",size=15, weight="bold"))
+            pm.grid(row=10, column=0, padx=0, pady= (10, 10))
+
+            dir = customtkinter.CTkLabel(detalle_f, text= f"Direccion: {lugar.ubicacion['direccion']}",font=customtkinter.CTkFont("Open Sans",size=15, weight="bold"))
+            dir.grid(row=11, column=0, padx=0, pady= (10, 10))
+            
+        else:
+            nombre = customtkinter.CTkLabel(detalle_f, text= f"Lugar agregado por Usuario",font=customtkinter.CTkFont("Open Sans",size=15, weight="bold"))
+            nombre.grid(row=3, column=0, padx=1, pady= (20, 10))
 
         rv_f = customtkinter.CTkScrollableFrame(master=inf)
         rv_f.grid(row=0, column=1,sticky="nsew",padx=10, pady=(70,10))
@@ -342,7 +373,7 @@ class Ventana2(customtkinter.CTk):
         for rev in lista_reviews:
             if rev["id destino"] == lugar.id_destino:
                 l_rev.append(rev)
-                label = customtkinter.CTkLabel(rv_f, text=rev["comentario"], image=None, compound="center", padx=30, anchor="e", height=60, width=10)
+                label = customtkinter.CTkLabel(rv_f, text=rev["comentario"], image=None, compound="center", padx=30, anchor="e", height=60, width=10,font=customtkinter.CTkFont("Open Sans",size=15, weight="bold"))
                 label.grid(row=len(l_rev), column=0, pady=(0, 10), sticky="w")
         if len(l_rev)==0:
             label = customtkinter.CTkLabel(rv_f, text="Este destino aun no tiene reseñas", image=None, compound="center", padx=30, anchor="e", height=60, width=10)
@@ -354,6 +385,7 @@ class Mapa(customtkinter.CTkFrame):
         super().__init__(master, **kwargs)
         self.columnconfigure(1, weight=1)
         self.rowconfigure(0, weight=1)
+        
 
         self.titulo = customtkinter.CTkLabel(self, text="Lista de lugares",text_color="#000000", font=customtkinter.CTkFont("Roboto Condensed",size=20, weight="bold")) 
         self.titulo.place(relx= 0.20, rely= 0.02)
@@ -364,7 +396,7 @@ class Mapa(customtkinter.CTkFrame):
         self.map_widget.grid(row=0, column=1,sticky="nsew",padx=10, pady=(10,10),ipadx= 500)
         self.map_widget.set_position(-24.727834140395917, -65.40757096102425)  
         self.map_widget.set_zoom(15)
-        # comando al mapa
+        # comando al mapa||||||||||||||||
         self.map_widget.add_right_click_menu_command(label="Agregar esta ubicacion",
                                                      command=self.agregar_ubicacion,
                                                      pass_coords=True)
@@ -383,25 +415,71 @@ class Mapa(customtkinter.CTkFrame):
         self.cuadro.resizable(False, False)
         self.cuadro.columnconfigure(0, weight=1)
         self.cuadro.rowconfigure(3, weight=1)
+        
 
         self.coord_str = f"{coords[0]}, {coords[1]}"
+#TERMINAR|||||||||||||||||||||
+        if usuario_principal["nombre"] == "admin":
+            self.cuadro.geometry("400x800")
+            self.cuadro.rowconfigure(7, weight=3)
+            
 
-        self.nombre_lugar = customtkinter.CTkEntry(self.cuadro, placeholder_text="Ingrese nombre de ubicacion",width=300, height=50)
-        self.nombre_lugar.grid(row=0,pady=20)
-    
-        boton_d = customtkinter.CTkButton(self.cuadro, text="Guardar datos", command=self.guardar_datos, width=300, height=40)
-        boton_d.grid(row=1,pady=10)
+            self.nombre_lugar = customtkinter.CTkEntry(self.cuadro, placeholder_text="Nombre de ubicacion",width=300, height=50)
+            self.nombre_lugar.grid(row=0,pady=20)
+
+            self.tipo_c = customtkinter.CTkEntry(self.cuadro, placeholder_text="tipo de cocina",width=300, height=50)
+            self.tipo_c.grid(row=1,pady=20)
+
+            self.ingred = customtkinter.CTkEntry(self.cuadro, placeholder_text="ingredientes separados por coma sin espacios",width=300, height=50)
+            self.ingred.grid(row=2,pady=20)
+
+            self.precio_min = customtkinter.CTkEntry(self.cuadro, placeholder_text="precio minimo",width=300, height=50)
+            self.precio_min.grid(row=3,pady=20)
+
+            self.precio_max = customtkinter.CTkEntry(self.cuadro, placeholder_text="precio maximo",width=300, height=50)
+            self.precio_max.grid(row=4,pady=20)
+
+            self.img = customtkinter.CTkEntry(self.cuadro, placeholder_text="imagen url",width=300, height=50)
+            self.img.grid(row=5,pady=20)
+
+            self.dir = customtkinter.CTkEntry(self.cuadro, placeholder_text="direccion",width=300, height=50)
+            self.dir.grid(row=6,pady=20)
+        
+            boton= customtkinter.CTkButton(self.cuadro, text="Guardar datos", command=self.guardar_datos_admin, width=250, height=40)
+            boton.grid(row=7,pady=10)
+            
+        else:
+
+            self.nombre_lugar = customtkinter.CTkEntry(self.cuadro, placeholder_text="Ingrese nombre de ubicacion",width=300, height=50)
+            self.nombre_lugar.grid(row=0,pady=20)
+        
+            boton_d = customtkinter.CTkButton(self.cuadro, text="Guardar datos", command=self.guardar_datos, width=300, height=40)
+            boton_d.grid(row=1,pady=10)
+
+    def guardar_datos_admin(self):
+        agregar_destino(nombre=self.nombre_lugar.get(), 
+                        tipo_cocina= self.tipo_c.get(),
+                        ingredientes=self.ingred.get(),
+                        precio_minimo=int(self.precio_min.get()),
+                        precio_maximo=int(self.precio_max.get()),
+                        direccion=self.dir.get(),
+                        coord=self.coord_str,
+                        imagen=self.img.get())
+        self.cuadro.destroy()
+        self.mostrar_lista()
+
+        
 
     def guardar_datos(self):
         nombre_lugar = self.nombre_lugar.get()
         if len(nombre_lugar) > 2:
-            agregar_destino_usuario(nombre_lugar, self.coord_str)
+            agregar_destino_usuario(nombre_lugar, self.coord_str,usuario_principal["id"])
         self.cuadro.destroy()
         self.mostrar_lista()
 
 
     def mostrar_lista(self):
-        self.lista_lugares = Destinoculinario.cargar_destinos()
+        self.lista_lugares = Destinoculinario.cargar_destinos(usuario_principal)
         self.label_button_par = []
         self.marcadores= []
 
@@ -442,19 +520,33 @@ class Busqueda(customtkinter.CTkFrame):
     
         self.entry.bind("<KeyRelease>", lambda e: self.buscar_lugar(self.entry.get()))
 
+        
+        self.lista_lugares = Destinoculinario.cargar_destinos(usuario_principal)
+
         self.filtro_frame = customtkinter.CTkScrollableFrame(self,fg_color="#80A096")
         self.filtro_frame.grid(row=1, column=1, columnspan=5, padx=10, pady=(0,10), sticky="nsew")
         self.filtro_frame.grid_rowconfigure(1, weight=3)
         self.filtro_frame.grid_columnconfigure(1, weight=3)
     
-    def buscar_lugar(self,entry):
-        pass
+    def buscar_lugar(self,entry=None):
+        if entry== None or len(entry)<1:
+            self.mostrar_lista(self.lista_lugares)
+        else:
+            self.lista_filtarda=[]
+            for widgets in self.filtro_frame.winfo_children():            #Solucion||||||||||||||||||||||||
+                print(widgets)
+                widgets.destroy()
+            for lugar in self.lista_lugares:
+                if str(entry.lower()) in lugar.nombre.lower():
+                    self.lista_filtarda.append(lugar)
+            self.mostrar_lista(self.lista_filtarda)
+            
+            
 
-    def mostrar_lista(self):
-        self.lista_lugares = Destinoculinario.cargar_destinos()
+
+    def mostrar_lista(self, lugares):
         self.label_button_m = []
-
-        for lugar in self.lista_lugares:
+        for lugar in lugares:
             item = lugar.nombre
             label = customtkinter.CTkLabel(self.filtro_frame, text=item, image=None, compound="center", padx=50, anchor="e", height=60, width=10,text_color="#1e1e26",font=customtkinter.CTkFont("Open Sans",size=20, weight="bold"))
             button = customtkinter.CTkButton(self.filtro_frame, text="Detalles", width=70, height=50,text_color="#F6F1EE",font=customtkinter.CTkFont("Open Sans",size=15, weight="bold"),fg_color="#38610B")
@@ -483,7 +575,7 @@ class Miruta(customtkinter.CTkFrame):
         self.lista_frame.grid_columnconfigure(0, weight=2)
 
     def mostrar_mi_ruta(self):
-        self.lista_lugares = Destinoculinario.cargar_destinos()
+        self.lista_lugares = Destinoculinario.cargar_destinos(usuario_principal)
         self.label_button_p = []
 
         for lugar in self.master.master.mi_ruta:  
@@ -569,9 +661,6 @@ class Miruta(customtkinter.CTkFrame):
                 json.dump(lista_reviews, f, indent=4)
                 print(lista_reviews)
             self.vt_rv.destroy()
-
-
-
 
 if __name__ == "__main__":
     app = Ventana1()

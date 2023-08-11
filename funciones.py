@@ -1,7 +1,7 @@
 import json
 
 class Destinoculinario:
-    def __init__(self, id_destino, nombre, tipo_cocina, ingredientes, precio_minimo, precio_maximo, disponibilidad, imagen, ubicacion, popularidad=None):
+    def __init__(self, id_destino, nombre, tipo_cocina, ingredientes, precio_minimo, precio_maximo, disponibilidad, imagen, ubicacion,id_usuario=None, popularidad=None):
         self.id_destino = id_destino
         self.nombre = nombre
         self.tipo_cocina = tipo_cocina
@@ -12,6 +12,7 @@ class Destinoculinario:
         self.disponibilidad= disponibilidad
         self.imagen= imagen
         self.ubicacion= ubicacion
+        self.id_usuario=id_usuario
 
     def cargar_review(self):
         try:
@@ -50,16 +51,25 @@ class Destinoculinario:
         return cls(**datos)
     
     @staticmethod
-    def cargar_destinos():
+    
+    def cargar_destinos(usuario_principal):
         with open("lista_lugares.json", "r") as archivo:
             datos = json.load(archivo)
-        return [Destinoculinario.de_json(json.dumps(dato)) for dato in datos]
+
+        destinos = []
+        for dato in datos:
+            destino = Destinoculinario.de_json(json.dumps(dato))
+            if destino.id_usuario is None or (usuario_principal is not None and destino.id_usuario == usuario_principal["id"]):
+                destinos.append(destino)
+
+        return destinos
+        #return [Destinoculinario.de_json(json.dumps(dato)) for dato in datos]
 
 
 
 
 
-def agregar_destino_usuario(nombre,coordenadas):
+def agregar_destino_usuario(nombre,coordenadas,id_usuario):
     try:
         with open('lista_lugares.json', 'r') as f:
             lista_lugar = json.load(f)
@@ -71,6 +81,7 @@ def agregar_destino_usuario(nombre,coordenadas):
         id_destino= 0
     id_destino = len(lista_lugar)+1
     #nombre = input("Nombre de lugar: ")
+    id_usuario= id_usuario
     tipo_cocina = None
     ingredientes = None
     precio_minimo = None
@@ -90,6 +101,7 @@ def agregar_destino_usuario(nombre,coordenadas):
         
         "id_destino": id_destino,
         "nombre": nombre,
+        "id_usuario": id_usuario,
         "tipo_cocina": tipo_cocina,
         "ingredientes": ingredientes,
         "precio_minimo": precio_minimo,
@@ -105,7 +117,8 @@ def agregar_destino_usuario(nombre,coordenadas):
         json.dump(lista_lugar, f, indent=4)
 
 
-def agregar_destino():
+
+def agregar_destino(nombre,tipo_cocina,ingredientes,precio_minimo,precio_maximo,direccion,coord,imagen):
     try:
         with open('lista_lugares.json', 'r') as f:
             lista_lugar = json.load(f)
@@ -116,29 +129,31 @@ def agregar_destino():
     if len(lista_lugar) < 0:
         id_destino= 0
     id_destino = len(lista_lugar)+1
-    nombre = input("Nombre de lugar: ")
-    tipo_cocina = input("tipo de cocina: ")
-    ingredientes=[]
-    for i in range (3):
-        ingrediente = input("ingrediente: ")
-        ingredientes.append(ingrediente)
-    precio_minimo = float(input("precio minimo: "))
-    precio_maximo= float(input("precio maximo: "))
+    id_usuario=None
+    #nombre = input("Nombre de lugar: ")
+    #tipo_cocina = input("tipo de cocina: ")
+    ingred=ingredientes.split(',')
+    #for i in range (3):
+    #    ingrediente = input("ingrediente: ")
+    #    ingredientes.append(ingrediente)
+    #precio_minimo = float(input("precio minimo: "))
+    #precio_maximo= float(input("precio maximo: "))
     popularidad= None
     disponibilidad= True
-    imagen= input("directorio de imagen: ")
+    #imagen= input("directorio de imagen: ")
     ubicacion = {
         
         "id ubicacion": id_destino,
-        "direccion": input("direccion"),
-        "coordenadas": input("coor: ")     
+        "direccion": direccion,
+        "coordenadas": coord     
     }
     destino = {
         
         "id_destino": id_destino,
         "nombre": nombre,
+        "id_usuario": id_usuario,
         "tipo_cocina": tipo_cocina,
-        "ingredientes": ingredientes,
+        "ingredientes": ingred,
         "precio_minimo": precio_minimo,
         "precio_maximo": precio_maximo,
         "popularidad": popularidad,
@@ -244,4 +259,59 @@ def iniciar_sesion(usuario, password):
     print("no encontrado")
     return None
 
-#agregar_destino()
+#a=Destinoculinario.cargar_destinos()
+# print(a)
+
+
+
+
+# def agregar_destino_c():
+#     try:
+#         with open('lista_lugares.json', 'r') as f:
+#             lista_lugar = json.load(f)
+#     except:
+#         lista_lugar=[]
+#         with open('lista_lugares.json', 'w') as f:
+#             json.dump(lista_lugar, f)
+#     if len(lista_lugar) < 0:
+#         id_destino= 0
+#     id_destino = len(lista_lugar)+1
+#     id_usuario=None
+#     nombre = input("Nombre de lugar: ")
+#     tipo_cocina = input("tipo de cocina: ")
+#     ingred=[]
+#     for i in range (3):
+#         ingrediente = input("ingrediente: ")
+#         ingred.append(ingrediente)
+#     precio_minimo = float(input("precio minimo: "))
+#     precio_maximo= float(input("precio maximo: "))
+#     popularidad= None
+#     disponibilidad= True
+#     imagen= input("directorio de imagen: ")
+#     ubicacion = {
+        
+#         "id ubicacion": id_destino,
+#         "direccion": input("direccion: "),
+#         "coordenadas": input("coord")     
+#     }
+#     destino = {
+        
+#         "id_destino": id_destino,
+#         "nombre": nombre,
+#         "id_usuario": id_usuario,
+#         "tipo_cocina": tipo_cocina,
+#         "ingredientes": ingred,
+#         "precio_minimo": precio_minimo,
+#         "precio_maximo": precio_maximo,
+#         "popularidad": popularidad,
+#         "disponibilidad": disponibilidad,
+#         "imagen": imagen,
+#         "ubicacion": ubicacion
+#     }
+#     lista_lugar.append(destino)
+
+#     with open('lista_lugares.json', 'w') as f:
+#         json.dump(lista_lugar, f, indent=4)
+
+
+#agregar_destino_c()

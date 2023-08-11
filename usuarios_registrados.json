@@ -2,9 +2,22 @@
     {
         "tipo": "usuario",
         "id": 1,
-        "nombre": "usuario1",
-        "apellido": "ap5465",
+        "nombre": "admin",
+        "apellido": "admin",
         "password": "12345",
+        "historial_ruta": [
+            1,
+            2,
+            3
+        ],
+        "agregados": []
+    },
+    {
+        "tipo": "usuario",
+        "id": 2,
+        "nombre": "usuario1",
+        "apellido": "ap2313",
+        "password": "123",
         "historial_ruta": [],
         "agregados": []
     }
